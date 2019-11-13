@@ -151,3 +151,23 @@ import ReactDOM from "react-dom"
 //     </Button>
 //   </div>
 // )
+
+/*
+const text = 'hello';
+(text2 => {
+  return text2;
+})(text)
+*/
+
+/* why className? React favors the javascript dom api
+
+let b = document.querySelector('button');
+b.className = 'cta';
+
+special case is style = 'font-size: 50px'
+in React, style must be an object 
+style : {
+  fontSize: 10
+}
+
+*/

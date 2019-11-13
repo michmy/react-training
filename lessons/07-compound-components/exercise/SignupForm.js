@@ -22,7 +22,10 @@ export default function SignupForm() {
   const [loading, setLoading] = useState(false)
   const [startDate, setStartDate] = useState(new Date("March 1, 2019"))
 
+  console.log('render')
+
   const handleSignup = async event => {
+    
     event.preventDefault()
     setLoading(true)
     const [displayName, photoURL, email, password] = event.target.elements
@@ -58,12 +61,11 @@ export default function SignupForm() {
         <TextInput id="password" label="Password" />
         <p>
           <span>Start:</span>{" "}
-          <DateFields
-            value={startDate}
-            onChange={setStartDate}
-            start={2018}
-            end={2019}
-          />
+          <DateFields value={startDate} onChange={setStartDate}>
+            <MonthField aria-label="Start Month" />
+            <DayField aria-label="Start Day" />
+            <YearField start={2018} end={2019} aria-label="Start year" />
+          </DateFields>
         </p>
         <TabsButton>
           <FaDumbbell />

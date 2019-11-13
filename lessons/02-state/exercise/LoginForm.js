@@ -8,8 +8,30 @@ import { login } from "app/utils"
 // export default LoginFormFinal
 
 export default function LoginForm() {
+  const [{ error, isLoading, isPasswordVisible }, setState] = useState({
+    error: null,
+    isLoading: false,
+    isPasswordVisible: false
+  })
+  
+  const handleLogin = async evt => {
+    evt.preventDefault()
+
+    const [emailNode, passwordNode] = evt.target.elements
+    const email = emailNode.value
+    const password = passwordNode.value
+    if (email.length > 0 && password.length > 0) {
+      setState({ isLoading: true })
+      try {
+        await login(email, password)
+      } catch (error) {
+        // error
+        setState({ error: error.message, isLoading: false })
+      }
+    }
+  }
   return (
-    <form>
+    <form onSubmit={handleLogin}>
       <VisuallyHidden>
         <label htmlFor="login:email">Email:</label>
       </VisuallyHidden>
@@ -25,7 +47,7 @@ export default function LoginForm() {
       </VisuallyHidden>
       <input
         id="login:password"
-        type="password"
+        type={!isPasswordVisible ? "password" : "text"}
         className="inputField"
         placeholder="Password"
       />
@@ -36,6 +58,9 @@ export default function LoginForm() {
             className="passwordCheckbox"
             type="checkbox"
             defaultChecked={false}
+            onChange={() => {
+              setState({ isPasswordVisible: !isPasswordVisible })
+            }}
           />{" "}
           show password
         </label>
@@ -43,8 +68,11 @@ export default function LoginForm() {
 
       <TabsButton>
         <FaSignInAlt />
-        <span>Login</span>
+        <span>{isLoading ? "Please wait..." : "Login"}</span>
       </TabsButton>
+      {error && (
+        <div style={{ color: "tomato", marginTop: "16px" }}>{error}</div>
+      )}
     </form>
   )
 }
